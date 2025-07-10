@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pexeso: Účesy</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: sans-serif;
+    background: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  h1 {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 10px;
+    width: 100%;
+    max-width: 420px;
+  }
+  .card {
+    background: white;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+  }
+  .card img {
+    max-width: 100%;
+    max-height: 100%;
+    display: none;
+    object-fit: cover;
+  }
+  .card span {
+    display: none;
+    font-size: 14px;
+    text-align: center;
+    padding: 5px;
+  }
+  .card.revealed img,
+  .card.revealed span {
+    display: block;
+  }
+  .card.matched {
+    background: #c8f7c5;
+    cursor: default;
+  }
+  #return-button {
+    display: none;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #333;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+  }
+</style>
+</head>
+<body>
+<img src="logo.png" alt="Logo firmy" style="max-width: 75px; margin-bottom: 10px;">
+<h1>Najdi účes a jeho název</h1>
+
+<div class="grid">
+<div class="card" data-name="Old Money"><img src="oldmoney.jpg" alt="Old Money"></div>
+<div class="card" data-name="Old Money"><span>Old Money</span></div>
+<div class="card" data-name="Faux Hawk"><span>Faux Hawk</span></div>
+<div class="card" data-name="Low Taper Fade"><img src="low-taper-afro.jpg" alt="Low Taper Fade"></div>
+<div class="card" data-name="Wavy top s Taper fadem"><span>Wavy top s Taper fadem</span></div>
+<div class="card" data-name="Fluffy"><span>Fluffy</span></div>
+<div class="card" data-name="Faux Hawk"><img src="fauxhawk.jpg" alt="Faux Hawk"></div>
+<div class="card" data-name="Wavy top s Taper fadem"><img src="wawytopstaperfadem.jpg" alt="Wavy top s Taper fadem"></div>
+<div class="card" data-name="Buzz Cut"><img src="buzzcut.jpg" alt="Buzz Cut"></div>
+<div class="card" data-name="Skin Fade s melírem"><span>Skin Fade s melírem</span></div>
+<div class="card" data-name="Texturovaný Účes"><span>Texturovaný Účes</span></div>
+<div class="card" data-name="Buzz Cut"><span>Buzz Cut</span></div>
+<div class="card" data-name="Texturovaný Účes"><img src="texturovanycrop.jpg" alt="Texturovaný Účes"></div>
+<div class="card" data-name="Fringe Up"><img src="fringeup.jpg" alt="Fringe Up"></div>
+<div class="card" data-name="Fringe Up"><span>Fringe Up</span></div>
+<div class="card" data-name="Low Taper Fade"><span>Low Taper Fade</span></div>
+<div class="card" data-name="Fluffy"><img src="fluffy.jpg" alt="Fluffy"></div>
+<div class="card" data-name="Skin Fade s melírem"><img src="skinfadesmelirem.jpg" alt="Skin Fade s melírem"></div>
+
+</div>
+
+<a id="return-button" href="https://tvuj-web.cz">⬅️ Zpět na web</a>
+
+<script>
+  const cards = document.querySelectorAll('.card');
+  let firstCard = null;
+  let lockBoard = false;
+
+  function checkWin() {
+    const matched = document.querySelectorAll('.card.matched').length;
+    const total = document.querySelectorAll('.card').length;
+    if (matched === total) {
+      document.getElementById('return-button').style.display = 'inline-block';
+    }
+  }
+
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      if (lockBoard || card.classList.contains('revealed') || card.classList.contains('matched')) return;
+      card.classList.add('revealed');
+
+      if (!firstCard) {
+        firstCard = card;
+        return;
+      }
+
+      if (firstCard.dataset.name === card.dataset.name) {
+        firstCard.classList.add('matched');
+        card.classList.add('matched');
+        firstCard = null;
+        checkWin();
+      } else {
+        lockBoard = true;
+        setTimeout(() => {
+          firstCard.classList.remove('revealed');
+          card.classList.remove('revealed');
+          firstCard = null;
+          lockBoard = false;
+        }, 1000);
+      }
+    });
+  });
+</script>
+</body>
+</html>
