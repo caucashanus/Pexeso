@@ -18,10 +18,13 @@
     margin-bottom: 10px;
   }
   .grid {
-    display: grid;
-    grid-template-columns: repeat(4, 100px);
-    gap: 10px;
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 10px;
+  width: 100%;
+  max-width: 420px;
+  box-sizing: border-box;
+}
   .card {
     background: white;
     border: 2px solid #ccc;
